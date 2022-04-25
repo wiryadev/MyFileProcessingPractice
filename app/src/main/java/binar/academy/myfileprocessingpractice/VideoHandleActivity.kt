@@ -88,9 +88,8 @@ class VideoHandleActivity : AppCompatActivity() {
         val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
 
         // Create a progressive media source pointing to a stream uri.
-        val mediaSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-            .createMediaSource(MediaItem.fromUri(videoURL))
 
-        return mediaSource
+        return ProgressiveMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(MediaItem.fromUri(videoURL))
     }
 }

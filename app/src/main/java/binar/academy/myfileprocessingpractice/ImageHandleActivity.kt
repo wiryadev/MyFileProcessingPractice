@@ -18,8 +18,6 @@ import binar.academy.myfileprocessingpractice.databinding.ActivityImageHandleBin
 class ImageHandleActivity : AppCompatActivity() {
     private lateinit var binding: ActivityImageHandleBinding
 
-    private val REQUEST_CODE_PERMISSION = 100
-
     private val cameraResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -119,3 +117,5 @@ class ImageHandleActivity : AppCompatActivity() {
 
     }
 }
+
+private const val REQUEST_CODE_PERMISSION = 100
