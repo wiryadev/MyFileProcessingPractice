@@ -1,24 +1,28 @@
 package binar.academy.myfileprocessingpractice
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import binar.academy.myfileprocessingpractice.utils.Utils
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import binar.academy.myfileprocessingpractice.databinding.ActivityPdfViewBinding
+import binar.academy.myfileprocessingpractice.utils.Utils
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import java.io.File
 
 class PdfViewActivity : AppCompatActivity() {
-    companion object {
-        private const val PDF_SELECTION_CODE = 99
-    }
+
     private lateinit var binding: ActivityPdfViewBinding
+
+    private val pdfResult = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { result ->
+        showPdfFromUri(result)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,21 +70,8 @@ class PdfViewActivity : AppCompatActivity() {
     }
 
     private fun selectPdfFromStorage() {
-        Toast.makeText(this, "selectPDF", Toast.LENGTH_LONG).show()
-        val browseStorage = Intent(Intent.ACTION_GET_CONTENT)
-        browseStorage.type = "application/pdf"
-        browseStorage.addCategory(Intent.CATEGORY_OPENABLE)
-        startActivityForResult(
-            Intent.createChooser(browseStorage, "Select PDF"), PDF_SELECTION_CODE
-        )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PDF_SELECTION_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            val selectedPdfFromStorage = data.data
-            showPdfFromUri(selectedPdfFromStorage)
-        }
+        Toast.makeText(this, "Select PDF", Toast.LENGTH_LONG).show()
+        pdfResult.launch("application/pdf")
     }
 
     private fun showPdfFromUri(uri: Uri?) {
